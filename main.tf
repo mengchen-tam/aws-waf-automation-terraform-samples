@@ -21,48 +21,18 @@ resource "aws_kms_key" "wafkey" {
   enable_key_rotation = true
   policy              = <<EOF
 {
-  "Version" : "2012-10-17",
-  "Id" : "key-default-1",
-  "Statement" : [ {
-      "Sid" : "Enable IAM User Permissions",
-      "Effect" : "Allow",
-      "Principal" : {
-        "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      },
-        "Action": [ 
-          "kms:Create*",
-          "kms:Describe*",
-          "kms:Enable*",
-          "kms:List*",
-          "kms:Put*",
-          "kms:Update*",
-          "kms:Revoke*",
-          "kms:Disable*",
-          "kms:GenerateDataKey*",
-          "kms:Get*",
-          "kms:Delete*",
-          "kms:ScheduleKeyDeletion",
-          "kms:ListAliases",
-          "kms:CreateGrant",
-          "kms:Encrypt*",
-          "kms:Decrypt*",
-          "kms:ReEncrypt*",
-          "kms:CancelKeyDeletion"
-      ],
-      "Resource" : "*"
-    },
+  "Version": "2012-10-17",
+  "Id": "key-default-1",
+  "Statement": [
     {
+      "Sid": "Enable IAM User Permissions",
       "Effect": "Allow",
-      "Principal": { "Service": "logs.${data.aws_region.current.name}.amazonaws.com" },
-      "Action": [ 
-        "kms:Encrypt*",
-        "kms:Decrypt*",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:Describe*"
-      ],
+      "Principal": {
+        "AWS": "arn:aws-cn:iam::${data.aws_caller_identity.current.account_id}:root"
+      },
+      "Action": "kms:*",
       "Resource": "*"
-    }  
+    }
   ]
 }
 EOF
@@ -217,7 +187,7 @@ POLICY
 
 
 data "aws_iam_policy" "s3Access" {
-  arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  arn = "arn:aws-cn:iam::aws:policy/AmazonS3ReadOnlyAccess"
 }
 
 resource "aws_iam_role" "s3bucketaccessrole" {
@@ -311,7 +281,7 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
 resource "aws_s3_bucket" "accesslogbucket" {
   count         = local.LogParser == "yes" ? 1 : 0
   bucket        = "${random_id.server.hex}-accesslogging"
-  acl           = "log-delivery-write"
+  ###acl           = "log-delivery-write"
   force_destroy = true
   versioning {
     enabled = true
@@ -4579,6 +4549,9 @@ resource "aws_api_gateway_rest_api" "api" {
   lifecycle {
     create_before_destroy = true
   }
+  endpoint_configuration {
+  types = ["REGIONAL"]
+}
 }
 
 resource "aws_api_gateway_resource" "resource" {
@@ -4662,7 +4635,7 @@ resource "aws_cloudwatch_log_group" "ApiGatewayBadBotStageAccessLogGroup" {
   count             = var.BadBotProtectionActivated == "yes" ? 1 : 0
   name              = "ApiGatewayBadBotStageAccessLogGroup-${random_id.server.hex}"
   retention_in_days = 90
-  kms_key_id        = aws_kms_key.wafkey.arn
+  #kms_key_id        = aws_kms_key.wafkey.arn
 }
 
 resource "aws_api_gateway_stage" "stage" {

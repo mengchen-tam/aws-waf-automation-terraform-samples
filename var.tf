@@ -28,11 +28,11 @@ variable "sse_algorithm" {
 #ELigible for switch case
 
 variable "ENDPOINT" {
-  description = "cloudfront or ALB"
+  description = "ALB"
   type        = string
-  default     = "cloudFront"
+  default     = "ALB"
   validation {
-    condition     = contains(["cloudfront", "ALB"], var.ENDPOINT)
+    condition     = contains(["ALB"], var.ENDPOINT)
     error_message = "Invalid input, options: \"cloudfront\",\"ALB\"."
   }
 }
