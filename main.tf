@@ -293,6 +293,9 @@ resource "aws_s3_bucket" "accesslogbucket" {
       }
     }
   }
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "accesslogbucket" {
@@ -418,18 +421,18 @@ resource "aws_iam_role_policy_attachment" "test-attach-log" {
 #IPV4 sets
 
 resource "aws_wafv2_ip_set" "WAFWhitelistSetV4" {
-  name               = "WAFWhitelistSetV41"
-  description        = "Block Bad Bot IPV4 addresses"
+  name               = "WAFWhitelistSetV4"
+  description        = "Whitelist IPV4 addresses"
   scope              = local.SCOPE
   ip_address_version = "IPV4"
   addresses          = []
 }
 
 resource "aws_wafv2_ip_set" "WAFBlacklistSetV4" {
-  name               = "WAFBlacklistSetV41"
-  description        = "Block Bad Bot IPV6 addresses"
+  name               = "WAFBlacklistSetV4"
+  description        = "Block IPV4 addresses"
   scope              = local.SCOPE
-  ip_address_version = "IPV6"
+  ip_address_version = "IPV4"
   addresses          = []
 }
 
@@ -476,16 +479,16 @@ resource "aws_wafv2_ip_set" "WAFScannersProbesSetV4" {
 #IPV6 sets
 
 resource "aws_wafv2_ip_set" "WAFWhitelistSetV6" {
-  name               = "WAFWhitelistSetV61"
-  description        = "Block Bad Bot IPV4 addresses"
+  name               = "WAFWhitelistSetV6"
+  description        = "Whitelist IPV6 addresses"
   scope              = local.SCOPE
-  ip_address_version = "IPV4"
+  ip_address_version = "IPV6"
   addresses          = []
 }
 
 resource "aws_wafv2_ip_set" "WAFBlacklistSetV6" {
-  name               = "WAFBlacklistSetV61"
-  description        = "Block Bad Bot IPV6 addresses"
+  name               = "WAFBlacklistSetV6"
+  description        = "Block IPV6 addresses"
   scope              = local.SCOPE
   ip_address_version = "IPV6"
   addresses          = []
@@ -607,7 +610,7 @@ resource "aws_wafv2_web_acl" "wafacl" {
         }
         statement {
           ip_set_reference_statement {
-            arn = aws_wafv2_ip_set.WAFWhitelistSetV4.arn
+            arn = aws_wafv2_ip_set.WAFWhitelistSetV6.arn
           }
         }
       }
@@ -636,7 +639,7 @@ resource "aws_wafv2_web_acl" "wafacl" {
         }
         statement {
           ip_set_reference_statement {
-            arn = aws_wafv2_ip_set.WAFBlacklistSetV4.arn
+            arn = aws_wafv2_ip_set.WAFBlacklistSetV6.arn
           }
         }
       }
