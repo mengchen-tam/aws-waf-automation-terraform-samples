@@ -277,7 +277,7 @@ variable "ActivateReputationListsProtectionParam" {
 
 variable "ActivateBadBotProtectionParam" {
   type    = string
-  default = "no"
+  default = "yes"
 
   # using contains()
   validation {

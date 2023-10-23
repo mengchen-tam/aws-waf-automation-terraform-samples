@@ -1,3 +1,6 @@
+## This is the fork branch for CN-region, for test and demostration only
+
+
 ## AWS WAF Automation Using Terraform
 
 [WAF Automation on AWS](https://aws.amazon.com/solutions/implementations/aws-waf-security-automations/) solution is developed using Terraform which automatically deploys a set of [AWS WAF](https://aws.amazon.com/waf/) rules that filter common web-based attacks. Users can select from preconfigured protective features that define the rules included in an AWS WAF web access control list (web ACL). Once deployed, AWS WAF protects your [Amazon CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) distributions or [Application Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) by inspecting web requests.
