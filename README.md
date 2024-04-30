@@ -1,5 +1,5 @@
 ## This is the fork branch for CN-region, for test and demostration only
-please checkout the branch to cn-region-branch
+
 
 
 ## AWS WAF Automation Using Terraform
